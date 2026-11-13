@@ -54,7 +54,6 @@
   .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
   nav .brand,nav .links a.sec{white-space:nowrap}
   @media(max-width:1300px){nav .links{gap:14px;font-size:.86rem}}
-  @media(max-width:1280px){nav .links a.sec[href="#mudou"],nav .links a.sec[href="#limites"]{display:none}}
   @media(max-width:1080px){nav .links a.sec[href="#problema"],nav .links a.sec[href="#como"]{display:none}}
   @media(max-width:900px){nav .links a.sec{display:none}}
   @media(max-width:520px){nav .wrap{gap:8px;padding:8px 14px;height:auto;flex-wrap:wrap} nav .links{gap:8px;margin-left:0;width:100%;justify-content:space-between} nav .btn{padding:.45em .7em;font-size:.82rem} .tgl{width:34px;height:34px}}
@@ -140,8 +139,6 @@
     <a class="sec" href="#problema">The problem</a>
     <a class="sec" href="#como">How it works</a>
     <a class="sec" href="#demo">The demo</a>
-    <a class="sec" href="#mudou">What changed</a>
-    <a class="sec" href="#limites">Limits</a>
     <a class="sec" href="#tecnico">Kit (technical)</a>
     <span class="lang"><a href="../">PT</a><a class="on" href="./">EN</a><a href="../es/">ES</a></span>
     <button class="tgl" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">🌙</button>
@@ -155,7 +152,7 @@
     <div>
       <span class="chip">style-to-skill · free kit · Claude Code or Codex</span>
       <h1>Every video you make in the <span class="amb">same style</span>, just by changing the topic</h1>
-      <p class="lead">You see a video with a look you love, but can't recreate it: every video you make comes out looking different. With the <strong>style-to-skill</strong> method, you can make as many videos as you want in the style of a video you admire, just by changing the topic. I'll show you how.</p>
+      <p class="lead">You see a video with a look you love, but can't recreate it: every video you make comes out looking different, and your channel ends up with no identity. With the <strong>style-to-skill</strong> method, you can make as many videos as you want in the style of a video you admire, just by changing the topic. I'll show you how.</p>
       <div class="cta">
         <a class="btn" href="#video">Understand it in 3 minutes</a>
         <a class="btn ghost" href="https://github.com/inematds/estilo-em-skill" target="_blank" rel="noopener">View on GitHub</a>
@@ -176,6 +173,7 @@
   <h2>Understand it in <span class="amb">3 minutes</span></h2>
   <!-- VIDEO: entra o explicavideo do projeto quando publicado -->
   <p class="sub">This kit's explainer video is in production and will appear here as soon as it's published.</p>
+  <p class="mut">Meanwhile, see the method's result in the <a href="#demo">demo video ↓</a> and learn <a href="#como">how it works ↓</a>.</p>
 </div></section>
 
 <section id="problema"><div class="wrap">
@@ -193,6 +191,8 @@
     <dt>Storyboard</dt><dd>a single drawing with several scenes side by side (up to 6), like a comic book page. The kit cuts this drawing into separate scenes.</dd>
     <dt>Engine</dt><dd>what brings the scenes to life. The free local engine moves the camera across the illustration on your computer.</dd>
     <dt>Soundtrack</dt><dd>the background music. The kit uses one track from beginning to end and lowers the volume when the voice speaks.</dd>
+    <dt>Dissolve</dt><dd>a smooth change from one scene to the next: one image fades out while the next fades in.</dd>
+    <dt>Manifest</dt><dd>a record the skill saves next to the video, listing everything that was used and made; the check reads this record.</dd>
   </dl></div>
 </div></section>
 
@@ -240,10 +240,10 @@
     <figure><img src="../assets/quadros-estilo.jpg" alt="Sheet with six cordel woodcut panels: sea, fair, house, loom, song, and road" loading="lazy" width="900" height="938"><figcaption><b>The reference style.</b> The 6 panels the kit chose on its own. Sea, fair, house, loom, song, and road are just the reference: the new video doesn’t repeat any of these scenes, only the drawing style.</figcaption></figure>
     <figure><img src="../assets/storyboard-1.jpg" alt="Six-panel storyboard in cordel style: Repeat, Copy, Hours, Agent, Teach, Rules" loading="lazy" width="900" height="900"><figcaption><b>Storyboard 1, new topic.</b> Six scenes in one drawing, in the same woodcut: a woman with a red headscarf, tired of repetitive work, and a wooden helper (the agent). The yellow string goes from one scene to the next.</figcaption></figure>
     <figure><img src="../assets/storyboard-2.jpg" alt="Storyboard 2 in six panels in cordel style: Do, Check, Notify, Time, Create, Free" loading="lazy" width="900" height="900"><figcaption><b>Storyboard 2.</b> It received the first one as a reference to keep the same woman and the same helper in the other six scenes.</figcaption></figure>
-    <figure><div class="vid"><video controls preload="none" playsinline poster="../assets/video-poster.jpg" width="540" height="960"><source src="../../exemplos/cordel/final/video-final.mp4" type="video/mp4"></video></div><figcaption><b>The finished video</b> (30 s, vertical, with sound; the drawn words and the narration are in Portuguese). The automatic check passed everything:
-      <ul class="ok"><li>30.0 seconds long, as requested</li><li>1080 × 1920, the vertical video size</li><li>sound in the video and voice in the narration (nothing is muted)</li><li>12 spoken phrases, checked against a transcript: they match the script</li><li>one soundtrack, lowered under the voice</li></ul></figcaption></figure>
+    <figure><div class="vid"><video controls preload="none" playsinline poster="../assets/video-poster.jpg" width="540" height="960"><source src="../../exemplos/cordel/final/video-final.mp4" type="video/mp4"></video></div><figcaption><b>The finished video</b> (30 s, vertical, with sound; the drawn words and the narration are in Portuguese). Everything checked out:
+      <ul class="ok"><li>30.0 seconds long, as requested</li><li>1080 × 1920, the vertical video size</li><li>sound in the video and voice in the narration (nothing is muted)</li><li>12 spoken phrases, checked separately against a local transcript: they match the script</li><li>one soundtrack, lowered under the voice</li></ul></figcaption></figure>
   </div>
-  <figure style="margin:22px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line)"><img src="../assets/folha-final.jpg" alt="Final sheet with one panel from each of the video's 12 scenes: Repeat, Copy, Hours, Agent, Teach, Rules, Do, Check, Notify, Time, Create, Free" loading="lazy" width="1200" height="742" style="width:100%;height:auto;display:block"><figcaption style="padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)"><b>The final sheet:</b> one panel from each scene, taken from the finished video. It’s what you check before saying “done”: the right word, complete lettering, the same style throughout. The video took 78 seconds to animate and assemble on this machine, with no video AI.</figcaption></figure>
+  <figure style="margin:22px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line)"><img src="../assets/folha-final.jpg" alt="Final sheet with one panel from each of the video's 12 scenes: Repeat, Copy, Hours, Agent, Teach, Rules, Do, Check, Notify, Time, Create, Free" loading="lazy" width="1200" height="742" style="width:100%;height:auto;display:block"><figcaption style="padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)"><b>The final sheet:</b> one panel from each scene, taken from the finished video. It’s what you check before saying “done”: the right word, complete lettering, the same style throughout. Animating the 12 scenes took 78 seconds on this machine, with no video AI.</figcaption></figure>
 </div></section>
 
 <section id="mudou"><div class="wrap">
@@ -343,13 +343,13 @@
 
   <div class="step"><div class="b">2</div><div>
     <h3>Extract frames from the reference video</h3>
-    <p>Choose the video whose style you want (one you can use) and save it in the kit folder. The script picks 5 to 8 different frames and creates a contact sheet. Open <code>folha.jpg</code> and check that the frames show the style.</p>
+    <p>Choose the video whose style you want (one you can use) and save it in the kit folder as <code>ref.mp4</code> (or replace <code>ref.mp4</code> in the command with your file name). The script picks 5 to 8 different frames and creates a contact sheet. Open <code>folha.jpg</code> and check that the frames show the style.</p>
 <pre><span class="k">python3 scripts/quadros.py ref.mp4 --n 8 --saida estilo/quadros/</span></pre>
   </div></div>
 
   <div class="step"><div class="b">3</div><div>
     <h3>Ask AI to write the style bible</h3>
-    <p>Copy the bible template, open Claude Code (<code>claude</code>) or Codex (<code>codex</code>) in the kit folder, and paste the text from <code>prompts/criar-skill.md</code> (the part after the <code>---</code> line). AI looks at the frames, fills in the bible, and makes a test image with a new subject. Check the colors and the "what not to do" section. At the end, no <code>PREENCHER</code> should be left.</p>
+    <p>Copy the bible template, open Claude Code (<code>claude</code>) or Codex (<code>codex</code>) in the kit folder, and paste the text from <code>prompts/criar-skill.md</code> (the part after the line of three dashes). AI looks at the frames, fills in the bible, and makes a test image with a new subject. Check the colors and the "what not to do" section. At the end, no <code>PREENCHER</code> should be left.</p>
 <pre><span class="k">mkdir -p estilo</span>
 <span class="k">cp molde/estilo-em-skill/references/estilo.md estilo/estilo.md</span>
 <span class="c"># after AI fills it in, this number must be 0:</span>
@@ -377,13 +377,13 @@
 
   <div class="step"><div class="b">5</div><div>
     <h3>Ask for the video</h3>
-    <p>In the folder where the skill is installed, open Claude Code or Codex and write your request. The skill asks about any missing details (subject, format, duration, resolution, engine), suggesting the defaults (vertical, 15 s, 1080 × 1920, local engine). Put music in <code>assets/trilha/</code> or say which one to use.</p>
+    <p>In the folder where the skill is installed, open Claude Code or Codex and write your request. The skill asks about any missing details (subject, format, duration, resolution, engine), suggesting the defaults (vertical, 15 s, 1080 × 1920, local engine). Put a music file in <code>assets/trilha/</code>, inside the folder where you opened Claude Code or Codex, or say which one to use.</p>
 <pre><span class="s">use a skill meu-estilo para um vídeo sobre como organizar a semana, 9:16, 15 segundos, motor local</span></pre>
   </div></div>
 
   <div class="step"><div class="b">6</div><div>
     <h3>What the skill runs (and you can run by hand)</h3>
-    <p>It writes <code>roteiro.json</code> (one large word and a line of up to 6 words per scene), generates the storyboards in the image tool, checks each one, and runs the scripts. These commands ran this way in the demo, from the project folder:</p>
+    <p>It writes <code>roteiro.json</code> (one large word and a line of up to 6 words per scene), generates the storyboards in the image tool, checks each one, and runs the scripts. These are the commands, in order, from the project folder (tested with the demo files; the duration must match the number of scenes in the script):</p>
 <pre><span class="k">S=.claude/skills/meu-estilo/scripts</span>
 <span class="k">python3 $S/cenas.py --tema "Seu tema" --duracao 30 --formato 9:16 --resolucao 1080x1920 --motor local --roteiro roteiro.json</span>
 <span class="k">python3 $S/pedido_storyboard.py</span>
@@ -427,7 +427,7 @@ PASSOU: vídeo conferido, pode dizer pronto.</pre>
   <p class="sub">The kit doesn't call any API. For AI video engines, it only writes the prompts; you run them in your own account.</p>
   <div class="tabwrap"><table class="n">
     <tr><th>Engine</th><th>Status</th><th>What it does</th></tr>
-    <tr><td><code>local</code></td><td><b>tested</b></td><td>free, with no AI video: each scene gets a slow camera movement (zoom up to 1.25×, pan), and the scenes are joined with a dissolve, for the exact duration</td></tr>
+    <tr><td><code>local</code></td><td><b>tested</b></td><td>free, with no AI video: each scene gets a slow camera movement (slow zoom, 1.18× by default and at most 1.25×, or pan), and the scenes are joined with a dissolve, for the exact duration</td></tr>
     <tr><td><code>kling</code></td><td>not tested in this kit</td><td><code>animar.py --motor kling --so-prompts</code> saves the <code>kling image_to_video</code> commands for each scene to <code>saida/prompts-kling.sh</code>; nothing is sent</td></tr>
     <tr><td><code>seedance</code> / higgsfield</td><td>not tested in this kit</td><td><code>animar.py --motor seedance --so-prompts</code> saves one prompt per storyboard to <code>saida/prompts-seedance.md</code> (scene timing, camera, text, transition, speech, no music) for you to paste into the site</td></tr>
   </table></div>

@@ -54,7 +54,6 @@
   .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
   nav .brand,nav .links a.sec{white-space:nowrap}
   @media(max-width:1300px){nav .links{gap:14px;font-size:.86rem}}
-  @media(max-width:1280px){nav .links a.sec[href="#mudou"],nav .links a.sec[href="#limites"]{display:none}}
   @media(max-width:1080px){nav .links a.sec[href="#problema"],nav .links a.sec[href="#como"]{display:none}}
   @media(max-width:900px){nav .links a.sec{display:none}}
   @media(max-width:520px){nav .wrap{gap:8px;padding:8px 14px;height:auto;flex-wrap:wrap} nav .links{gap:8px;margin-left:0;width:100%;justify-content:space-between} nav .btn{padding:.45em .7em;font-size:.82rem} .tgl{width:34px;height:34px}}
@@ -140,8 +139,6 @@
     <a class="sec" href="#problema">O problema</a>
     <a class="sec" href="#como">Como funciona</a>
     <a class="sec" href="#demo">A demo</a>
-    <a class="sec" href="#mudou">O que mudou</a>
-    <a class="sec" href="#limites">Limites</a>
     <a class="sec" href="#tecnico">Kit (técnico)</a>
     <span class="lang"><a class="on" href="./">PT</a><a href="en/">EN</a><a href="es/">ES</a></span>
     <button class="tgl" id="themeToggle" aria-label="Alternar tema" title="Alternar tema">🌙</button>
@@ -155,7 +152,7 @@
     <div>
       <span class="chip">estilo em skill · kit grátis · Claude Code ou Codex</span>
       <h1>Todo vídeo seu no <span class="amb">mesmo estilo</span>, só trocando o tema</h1>
-      <p class="lead">Você vê um vídeo com um visual que adora e não consegue repetir: cada vídeo seu sai com uma cara diferente. Com o método <strong>estilo em skill</strong>, você faz quantos vídeos quiser no estilo daquele vídeo que admira, só trocando o tema. Vou te mostrar como.</p>
+      <p class="lead">Você vê um vídeo com um visual que adora e não consegue repetir: cada vídeo seu sai com uma cara diferente, e o seu canal fica sem identidade. Com o método <strong>estilo em skill</strong>, você faz quantos vídeos quiser no estilo daquele vídeo que admira, só trocando o tema. Vou te mostrar como.</p>
       <div class="cta">
         <a class="btn" href="#video">Entender em 3 minutos</a>
         <a class="btn ghost" href="https://github.com/inematds/estilo-em-skill" target="_blank" rel="noopener">Ver no GitHub</a>
@@ -176,6 +173,7 @@
   <h2>Entenda em <span class="amb">3 minutos</span></h2>
   <!-- VIDEO: entra o explicavideo do projeto quando publicado -->
   <p class="sub">O vídeo explicativo deste kit está em produção e entra aqui assim que for publicado.</p>
+  <p class="mut">Enquanto isso, veja o resultado do método no <a href="#demo">vídeo da demo ↓</a> e entenda <a href="#como">como funciona ↓</a>.</p>
 </div></section>
 
 <section id="problema"><div class="wrap">
@@ -193,6 +191,8 @@
     <dt>Storyboard</dt><dd>um desenho único com várias cenas lado a lado (até 6), como uma página de quadrinho. O kit corta esse desenho em cenas separadas.</dd>
     <dt>Motor</dt><dd>quem dá movimento às cenas. O motor local, grátis, faz a câmera passear pela ilustração no seu computador.</dd>
     <dt>Trilha</dt><dd>a música de fundo. O kit usa uma só do começo ao fim e abaixa o volume quando a voz fala.</dd>
+    <dt>Dissolve</dt><dd>a passagem suave de uma cena para a outra: uma imagem some enquanto a próxima aparece.</dd>
+    <dt>Manifesto</dt><dd>uma ficha que a skill grava junto do vídeo, com a lista de tudo o que foi usado e feito; a conferência lê essa ficha.</dd>
   </dl></div>
 </div></section>
 
@@ -240,10 +240,10 @@
     <figure><img src="assets/quadros-estilo.jpg" alt="Folha com seis quadros de xilogravura de cordel: mar, feira, casa, tear, canto e estrada" loading="lazy" width="900" height="938"><figcaption><b>O estilo de referência.</b> Os 6 quadros que o kit escolheu sozinho. Mar, feira, casa, tear, canto e estrada são só a referência: o vídeo novo não repete nenhuma dessas cenas, só o jeito de desenhar.</figcaption></figure>
     <figure><img src="assets/storyboard-1.jpg" alt="Storyboard em seis painéis no estilo cordel: Repetir, Copiar, Horas, Agente, Ensina, Regras" loading="lazy" width="900" height="900"><figcaption><b>Storyboard 1, tema novo.</b> Seis cenas num desenho só, na mesma gravura: uma mulher de lenço vermelho cansada do trabalho repetido e um ajudante de madeira (o agente). O cordão amarelo passa de uma cena para a outra.</figcaption></figure>
     <figure><img src="assets/storyboard-2.jpg" alt="Storyboard 2 em seis painéis no estilo cordel: Faz, Confere, Avisa, Tempo, Criar, Livre" loading="lazy" width="900" height="900"><figcaption><b>Storyboard 2.</b> Recebeu o primeiro como referência, para manter a mesma mulher e o mesmo ajudante nas outras seis cenas.</figcaption></figure>
-    <figure><div class="vid"><video controls preload="none" playsinline poster="assets/video-poster.jpg" width="540" height="960"><source src="../exemplos/cordel/final/video-final.mp4" type="video/mp4"></video></div><figcaption><b>O vídeo pronto</b> (30 s, vertical, com som). A conferência automática passou em tudo:
-      <ul class="ok"><li>duração de 30,0 segundos, como foi pedido</li><li>1080 × 1920, o tamanho do vertical</li><li>som no vídeo e voz na narração (nada mudo)</li><li>12 frases faladas, conferidas com uma transcrição: batem com o roteiro</li><li>uma trilha só, abaixando sob a voz</li></ul></figcaption></figure>
+    <figure><div class="vid"><video controls preload="none" playsinline poster="assets/video-poster.jpg" width="540" height="960"><source src="../exemplos/cordel/final/video-final.mp4" type="video/mp4"></video></div><figcaption><b>O vídeo pronto</b> (30 s, vertical, com som). A conferência passou em tudo:
+      <ul class="ok"><li>duração de 30,0 segundos, como foi pedido</li><li>1080 × 1920, o tamanho do vertical</li><li>som no vídeo e voz na narração (nada mudo)</li><li>12 frases faladas, conferidas à parte com uma transcrição local: batem com o roteiro</li><li>uma trilha só, abaixando sob a voz</li></ul></figcaption></figure>
   </div>
-  <figure style="margin:22px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line)"><img src="assets/folha-final.jpg" alt="Folha final com um quadro de cada uma das 12 cenas do vídeo: Repetir, Copiar, Horas, Agente, Ensina, Regras, Faz, Confere, Avisa, Tempo, Criar, Livre" loading="lazy" width="1200" height="742" style="width:100%;height:auto;display:block"><figcaption style="padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)"><b>A folha final:</b> um quadro de cada cena, tirado do vídeo pronto. É ela que se olha antes de dizer "pronto": palavra certa, letra inteira, mesmo estilo em todas. O vídeo levou 78 segundos para animar e montar nesta máquina, sem nenhuma IA de vídeo.</figcaption></figure>
+  <figure style="margin:22px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line)"><img src="assets/folha-final.jpg" alt="Folha final com um quadro de cada uma das 12 cenas do vídeo: Repetir, Copiar, Horas, Agente, Ensina, Regras, Faz, Confere, Avisa, Tempo, Criar, Livre" loading="lazy" width="1200" height="742" style="width:100%;height:auto;display:block"><figcaption style="padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)"><b>A folha final:</b> um quadro de cada cena, tirado do vídeo pronto. É ela que se olha antes de dizer "pronto": palavra certa, letra inteira, mesmo estilo em todas. Animar as 12 cenas levou 78 segundos nesta máquina, sem nenhuma IA de vídeo.</figcaption></figure>
 </div></section>
 
 <section id="mudou"><div class="wrap">
@@ -343,13 +343,13 @@
 
   <div class="step"><div class="b">2</div><div>
     <h3>Tire os quadros do vídeo de referência</h3>
-    <p>Escolha o vídeo cujo estilo você quer (um que você pode usar) e salve na pasta do kit. O script escolhe de 5 a 8 quadros diferentes e monta a folha de contato. Abra a <code>folha.jpg</code> e veja se os quadros mostram o estilo.</p>
+    <p>Escolha o vídeo cujo estilo você quer (um que você pode usar) e salve na pasta do kit com o nome <code>ref.mp4</code> (ou troque <code>ref.mp4</code> no comando pelo nome do seu arquivo). O script escolhe de 5 a 8 quadros diferentes e monta a folha de contato. Abra a <code>folha.jpg</code> e veja se os quadros mostram o estilo.</p>
 <pre><span class="k">python3 scripts/quadros.py ref.mp4 --n 8 --saida estilo/quadros/</span></pre>
   </div></div>
 
   <div class="step"><div class="b">3</div><div>
     <h3>Peça para a IA escrever a bíblia do estilo</h3>
-    <p>Copie o molde da bíblia, abra o Claude Code (<code>claude</code>) ou o Codex (<code>codex</code>) na pasta do kit e cole o texto de <code>prompts/criar-skill.md</code> (a parte depois da linha <code>---</code>). A IA olha os quadros, preenche a bíblia e faz uma imagem de teste com um assunto novo. Confira as cores e o "o que não fazer". No fim, não pode sobrar nenhum <code>PREENCHER</code>.</p>
+    <p>Copie o molde da bíblia, abra o Claude Code (<code>claude</code>) ou o Codex (<code>codex</code>) na pasta do kit e cole o texto de <code>prompts/criar-skill.md</code> (a parte depois da linha de três tracinhos). A IA olha os quadros, preenche a bíblia e faz uma imagem de teste com um assunto novo. Confira as cores e o "o que não fazer". No fim, não pode sobrar nenhum <code>PREENCHER</code>.</p>
 <pre><span class="k">mkdir -p estilo</span>
 <span class="k">cp molde/estilo-em-skill/references/estilo.md estilo/estilo.md</span>
 <span class="c"># depois que a IA preencher, este número tem de ser 0:</span>
@@ -377,13 +377,13 @@
 
   <div class="step"><div class="b">5</div><div>
     <h3>Peça o vídeo</h3>
-    <p>Na pasta onde a skill está instalada, abra o Claude Code ou o Codex e escreva o pedido. O que faltar dos cinco dados (tema, formato, duração, resolução, motor) a skill pergunta, sugerindo o padrão (vertical, 15 s, 1080 × 1920, motor local). Ponha uma música em <code>assets/trilha/</code> ou diga qual usar.</p>
+    <p>Na pasta onde a skill está instalada, abra o Claude Code ou o Codex e escreva o pedido. O que faltar dos cinco dados (tema, formato, duração, resolução, motor) a skill pergunta, sugerindo o padrão (vertical, 15 s, 1080 × 1920, motor local). Ponha uma música na pasta <code>assets/trilha/</code>, dentro da pasta onde você abriu o Claude Code ou o Codex, ou diga qual usar.</p>
 <pre><span class="s">use a skill meu-estilo para um vídeo sobre como organizar a semana, 9:16, 15 segundos, motor local</span></pre>
   </div></div>
 
   <div class="step"><div class="b">6</div><div>
     <h3>O que a skill roda (e você pode rodar à mão)</h3>
-    <p>Ela escreve o <code>roteiro.json</code> (uma palavra grande e uma fala de até 6 palavras por cena), gera os storyboards na ferramenta de imagem, olha cada um e segue pelos scripts. Estes comandos rodaram assim na demo, a partir da pasta do projeto:</p>
+    <p>Ela escreve o <code>roteiro.json</code> (uma palavra grande e uma fala de até 6 palavras por cena), gera os storyboards na ferramenta de imagem, olha cada um e segue pelos scripts. Estes são os comandos, na ordem, a partir da pasta do projeto (testados com os arquivos da demo; a duração tem de bater com o número de cenas do roteiro):</p>
 <pre><span class="k">S=.claude/skills/meu-estilo/scripts</span>
 <span class="k">python3 $S/cenas.py --tema "Seu tema" --duracao 30 --formato 9:16 --resolucao 1080x1920 --motor local --roteiro roteiro.json</span>
 <span class="k">python3 $S/pedido_storyboard.py</span>
@@ -427,7 +427,7 @@ PASSOU: vídeo conferido, pode dizer pronto.</pre>
   <p class="sub">O kit não chama nenhuma API. Nos motores de IA de vídeo, ele só escreve os pedidos; quem roda é você, na sua conta.</p>
   <div class="tabwrap"><table class="n">
     <tr><th>Motor</th><th>Estado</th><th>O que faz</th></tr>
-    <tr><td><code>local</code></td><td><b>testado</b></td><td>grátis, sem IA de vídeo: cada cena ganha um movimento de câmera lento (zoom até 1,25×, pan) e as cenas se ligam por dissolve, na duração exata</td></tr>
+    <tr><td><code>local</code></td><td><b>testado</b></td><td>grátis, sem IA de vídeo: cada cena ganha um movimento de câmera lento (zoom lento, padrão 1,18× e no máximo 1,25×, ou pan) e as cenas se ligam por dissolve, na duração exata</td></tr>
     <tr><td><code>kling</code></td><td>não testado neste kit</td><td><code>animar.py --motor kling --so-prompts</code> grava em <code>saida/prompts-kling.sh</code> os comandos <code>kling image_to_video</code> de cada cena; nada é enviado</td></tr>
     <tr><td><code>seedance</code> / higgsfield</td><td>não testado neste kit</td><td><code>animar.py --motor seedance --so-prompts</code> grava em <code>saida/prompts-seedance.md</code> um prompt por storyboard (tempo de cada cena, câmera, texto, transição, fala, sem música) para colar no site</td></tr>
   </table></div>

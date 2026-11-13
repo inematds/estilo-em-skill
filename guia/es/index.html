@@ -54,7 +54,6 @@
   .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
   nav .brand,nav .links a.sec{white-space:nowrap}
   @media(max-width:1300px){nav .links{gap:14px;font-size:.86rem}}
-  @media(max-width:1280px){nav .links a.sec[href="#mudou"],nav .links a.sec[href="#limites"]{display:none}}
   @media(max-width:1080px){nav .links a.sec[href="#problema"],nav .links a.sec[href="#como"]{display:none}}
   @media(max-width:900px){nav .links a.sec{display:none}}
   @media(max-width:520px){nav .wrap{gap:8px;padding:8px 14px;height:auto;flex-wrap:wrap} nav .links{gap:8px;margin-left:0;width:100%;justify-content:space-between} nav .btn{padding:.45em .7em;font-size:.82rem} .tgl{width:34px;height:34px}}
@@ -140,8 +139,6 @@
     <a class="sec" href="#problema">El problema</a>
     <a class="sec" href="#como">Cómo funciona</a>
     <a class="sec" href="#demo">La demo</a>
-    <a class="sec" href="#mudou">Qué cambió</a>
-    <a class="sec" href="#limites">Límites</a>
     <a class="sec" href="#tecnico">Kit (técnico)</a>
     <span class="lang"><a href="../">PT</a><a href="../en/">EN</a><a class="on" href="./">ES</a></span>
     <button class="tgl" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
@@ -155,7 +152,7 @@
     <div>
       <span class="chip">estilo en skill · kit gratis · Claude Code o Codex</span>
       <h1>Todos tus videos con el <span class="amb">mismo estilo</span>, solo cambiando el tema</h1>
-      <p class="lead">Ves un video con un estilo visual que te encanta y no consigues repetirlo: cada video tuyo sale diferente. Con el método <strong>estilo en skill</strong>, haces todos los videos que quieras con el estilo de ese video que admiras, solo cambiando el tema. Te muestro cómo.</p>
+      <p class="lead">Ves un video con un estilo visual que te encanta y no consigues repetirlo: cada video tuyo sale diferente y tu canal se queda sin identidad. Con el método <strong>estilo en skill</strong>, haces todos los videos que quieras con el estilo de ese video que admiras, solo cambiando el tema. Te muestro cómo.</p>
       <div class="cta">
         <a class="btn" href="#video">Entender en 3 minutos</a>
         <a class="btn ghost" href="https://github.com/inematds/estilo-em-skill" target="_blank" rel="noopener">Ver en GitHub</a>
@@ -176,6 +173,7 @@
   <h2>Entiéndelo en <span class="amb">3 minutos</span></h2>
   <!-- VIDEO: entra o explicavideo do projeto quando publicado -->
   <p class="sub">El video explicativo de este kit está en producción y aparecerá aquí en cuanto se publique.</p>
+  <p class="mut">Mientras tanto, mira el resultado del método en el <a href="#demo">video de la demo ↓</a> y entiende <a href="#como">cómo funciona ↓</a>.</p>
 </div></section>
 
 <section id="problema"><div class="wrap">
@@ -192,7 +190,9 @@
     <dt>Biblia del estilo</dt><dd>el documento que describe el estilo con reglas que se pueden comprobar: colores en código, letra, composición, qué no hacer y una frase que va en cada pedido de imagen.</dd>
     <dt>Storyboard</dt><dd>un solo dibujo con varias escenas lado a lado (hasta 6), como una página de historieta. El kit corta este dibujo en escenas separadas.</dd>
     <dt>Motor</dt><dd>quien da movimiento a las escenas. El motor local y gratis hace que la cámara recorra la ilustración en tu computadora.</dd>
-    <dt>Trilha</dt><dd>la música de fondo. El kit usa una sola de principio a fin y baja el volumen cuando se oye la voz.</dd>
+    <dt>Música de fondo</dt><dd>la música de fondo. El kit usa una sola de principio a fin y baja el volumen cuando se oye la voz.</dd>
+    <dt>Disolución</dt><dd>el paso suave de una escena a otra: una imagen desaparece mientras aparece la siguiente.</dd>
+    <dt>Manifiesto</dt><dd>una ficha que la skill guarda junto al video, con la lista de todo lo que se usó y se hizo; la revisión lee esa ficha.</dd>
   </dl></div>
 </div></section>
 
@@ -240,10 +240,10 @@
     <figure><img src="../assets/quadros-estilo.jpg" alt="Hoja con seis cuadros de xilografía de cordel: mar, feria, casa, telar, canto y camino" loading="lazy" width="900" height="938"><figcaption><b>El estilo de referencia.</b> Los 6 cuadros que el kit eligió por su cuenta. Mar, feria, casa, telar, canto y camino son solo la referencia: el video nuevo no repite ninguna de estas escenas, solo la forma de dibujar.</figcaption></figure>
     <figure><img src="../assets/storyboard-1.jpg" alt="Storyboard en seis paneles con estilo de cordel: Repetir, Copiar, Horas, Agente, Enseña, Reglas" loading="lazy" width="900" height="900"><figcaption><b>Storyboard 1, tema nuevo.</b> Seis escenas en un solo dibujo, en el mismo grabado: una mujer con pañuelo rojo, cansada del trabajo repetitivo, y un ayudante de madera (el agente). El cordón amarillo pasa de una escena a otra.</figcaption></figure>
     <figure><img src="../assets/storyboard-2.jpg" alt="Storyboard 2 en seis paneles con estilo de cordel: Hace, Revisa, Avisa, Tiempo, Crear, Libre" loading="lazy" width="900" height="900"><figcaption><b>Storyboard 2.</b> Se usó el primero como referencia para mantener a la misma mujer y al mismo ayudante en las otras seis escenas.</figcaption></figure>
-    <figure><div class="vid"><video controls preload="none" playsinline poster="../assets/video-poster.jpg" width="540" height="960"><source src="../../exemplos/cordel/final/video-final.mp4" type="video/mp4"></video></div><figcaption><b>El video listo</b> (30 s, vertical, con sonido; las palabras dibujadas y la narración están en portugués). La revisión automática comprobó todo:
-      <ul class="ok"><li>30,0 segundos de duración, como se pidió</li><li>1080 × 1920, el tamaño del formato vertical</li><li>video con sonido y voz en la narración (nada silenciado)</li><li>12 frases habladas, verificadas con una transcripción: coinciden con el guion</li><li>una sola música de fondo, con el volumen más bajo durante la voz</li></ul></figcaption></figure>
+    <figure><div class="vid"><video controls preload="none" playsinline poster="../assets/video-poster.jpg" width="540" height="960"><source src="../../exemplos/cordel/final/video-final.mp4" type="video/mp4"></video></div><figcaption><b>El video listo</b> (30 s, vertical, con sonido; las palabras dibujadas y la narración están en portugués). Todo se comprobó:
+      <ul class="ok"><li>30,0 segundos de duración, como se pidió</li><li>1080 × 1920, el tamaño del formato vertical</li><li>video con sonido y voz en la narración (nada silenciado)</li><li>12 frases habladas, verificadas aparte con una transcripción local: coinciden con el guion</li><li>una sola música de fondo, con el volumen más bajo durante la voz</li></ul></figcaption></figure>
   </div>
-  <figure style="margin:22px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line)"><img src="../assets/folha-final.jpg" alt="Hoja final con un cuadro de cada una de las 12 escenas del video: Repetir, Copiar, Horas, Agente, Enseña, Reglas, Hace, Revisa, Avisa, Tiempo, Crear, Libre" loading="lazy" width="1200" height="742" style="width:100%;height:auto;display:block"><figcaption style="padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)"><b>La hoja final:</b> un cuadro de cada escena, extraído del video listo. Se revisa antes de decir «listo»: palabra correcta, letras completas, mismo estilo en todas. El video tardó 78 segundos en animarse y montarse en esta máquina, sin ninguna IA de video.</figcaption></figure>
+  <figure style="margin:22px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line)"><img src="../assets/folha-final.jpg" alt="Hoja final con un cuadro de cada una de las 12 escenas del video: Repetir, Copiar, Horas, Agente, Enseña, Reglas, Hace, Revisa, Avisa, Tiempo, Crear, Libre" loading="lazy" width="1200" height="742" style="width:100%;height:auto;display:block"><figcaption style="padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)"><b>La hoja final:</b> un cuadro de cada escena, extraído del video listo. Se revisa antes de decir «listo»: palabra correcta, letras completas, mismo estilo en todas. Animar las 12 escenas tardó 78 segundos en esta máquina, sin ninguna IA de video.</figcaption></figure>
 </div></section>
 
 <section id="mudou"><div class="wrap">
@@ -343,13 +343,13 @@
 
   <div class="step"><div class="b">2</div><div>
     <h3>Extrae los fotogramas del video de referencia</h3>
-    <p>Elige el video cuyo estilo quieres (uno que puedas usar) y guárdalo en la carpeta del kit. El script elige de 5 a 8 fotogramas distintos y crea la hoja de contacto. Abre la <code>folha.jpg</code> y comprueba si los fotogramas muestran el estilo.</p>
+    <p>Elige el video cuyo estilo quieres (uno que puedas usar) y guárdalo en la carpeta del kit con el nombre <code>ref.mp4</code> (o cambia <code>ref.mp4</code> en el comando por el nombre de tu archivo). El script elige de 5 a 8 fotogramas distintos y crea la hoja de contacto. Abre la <code>folha.jpg</code> y comprueba si los fotogramas muestran el estilo.</p>
 <pre><span class="k">python3 scripts/quadros.py ref.mp4 --n 8 --saida estilo/quadros/</span></pre>
   </div></div>
 
   <div class="step"><div class="b">3</div><div>
     <h3>Pídele a la IA que escriba la biblia del estilo</h3>
-    <p>Copia la plantilla de la biblia, abre Claude Code (<code>claude</code>) o Codex (<code>codex</code>) en la carpeta del kit y pega el texto de <code>prompts/criar-skill.md</code> (la parte después de la línea <code>---</code>). La IA revisa los fotogramas, completa la biblia y crea una imagen de prueba con un tema nuevo. Revisa los colores y «qué no hacer». Al final, no debe quedar ningún <code>PREENCHER</code>.</p>
+    <p>Copia la plantilla de la biblia, abre Claude Code (<code>claude</code>) o Codex (<code>codex</code>) en la carpeta del kit y pega el texto de <code>prompts/criar-skill.md</code> (la parte después de la línea de tres guiones). La IA revisa los fotogramas, completa la biblia y crea una imagen de prueba con un tema nuevo. Revisa los colores y «qué no hacer». Al final, no debe quedar ningún <code>PREENCHER</code>.</p>
 <pre><span class="k">mkdir -p estilo</span>
 <span class="k">cp molde/estilo-em-skill/references/estilo.md estilo/estilo.md</span>
 <span class="c"># después de que la IA complete la biblia, este número debe ser 0:</span>
@@ -377,13 +377,13 @@
 
   <div class="step"><div class="b">5</div><div>
     <h3>Pide el video</h3>
-    <p>En la carpeta donde está instalada la skill, abre Claude Code o Codex y escribe tu pedido. Si falta alguno de los cinco datos (tema, formato, duración, resolución, motor), la skill te pregunta y sugiere los valores predeterminados (vertical, 15 s, 1080 × 1920, motor local). Pon una canción en <code>assets/trilha/</code> o indica cuál usar.</p>
+    <p>En la carpeta donde está instalada la skill, abre Claude Code o Codex y escribe tu pedido. Si falta alguno de los cinco datos (tema, formato, duración, resolución, motor), la skill te pregunta y sugiere los valores predeterminados (vertical, 15 s, 1080 × 1920, motor local). Pon una canción en la carpeta <code>assets/trilha/</code>, dentro de la carpeta donde abriste Claude Code o Codex, o indica cuál usar.</p>
 <pre><span class="s">use a skill meu-estilo para um vídeo sobre como organizar a semana, 9:16, 15 segundos, motor local</span></pre>
   </div></div>
 
   <div class="step"><div class="b">6</div><div>
     <h3>Qué ejecuta la skill (y puedes ejecutar a mano)</h3>
-    <p>Escribe el <code>roteiro.json</code> (una palabra grande y una frase de hasta 6 palabras por escena), genera los storyboards con la herramienta de imagen, revisa cada uno y continúa con los scripts. Estos comandos se ejecutaron así en la demo, desde la carpeta del proyecto:</p>
+    <p>Escribe el <code>roteiro.json</code> (una palabra grande y una frase de hasta 6 palabras por escena), genera los storyboards con la herramienta de imagen, revisa cada uno y continúa con los scripts. Estos son los comandos, en orden, desde la carpeta del proyecto (probados con los archivos de la demo; la duración debe coincidir con el número de escenas del guion):</p>
 <pre><span class="k">S=.claude/skills/meu-estilo/scripts</span>
 <span class="k">python3 $S/cenas.py --tema "Seu tema" --duracao 30 --formato 9:16 --resolucao 1080x1920 --motor local --roteiro roteiro.json</span>
 <span class="k">python3 $S/pedido_storyboard.py</span>
@@ -427,7 +427,7 @@ PASSOU: vídeo conferido, pode dizer pronto.</pre>
   <p class="sub">El kit no llama a ninguna API. Con los motores de IA de video, solo escribe las instrucciones; quien las ejecuta eres tú, desde tu cuenta.</p>
   <div class="tabwrap"><table class="n">
     <tr><th>Motor</th><th>Estado</th><th>Qué hace</th></tr>
-    <tr><td><code>local</code></td><td><b>probado</b></td><td>gratis, sin IA de video: cada escena recibe un movimiento lento de cámara (zoom hasta 1,25×, paneo) y las escenas se conectan con una disolución, con la duración exacta</td></tr>
+    <tr><td><code>local</code></td><td><b>probado</b></td><td>gratis, sin IA de video: cada escena recibe un movimiento lento de cámara (zoom lento, 1,18× por defecto y como máximo 1,25×, o paneo) y las escenas se conectan con una disolución, con la duración exacta</td></tr>
     <tr><td><code>kling</code></td><td>no probado en este kit</td><td><code>animar.py --motor kling --so-prompts</code> guarda en <code>saida/prompts-kling.sh</code> los comandos <code>kling image_to_video</code> para cada escena; no se envía nada</td></tr>
     <tr><td><code>seedance</code> / higgsfield</td><td>no probado en este kit</td><td><code>animar.py --motor seedance --so-prompts</code> guarda en <code>saida/prompts-seedance.md</code> un prompt por storyboard (duración de cada escena, cámara, texto, transición, voz, sin música) para pegar en el sitio</td></tr>
   </table></div>
