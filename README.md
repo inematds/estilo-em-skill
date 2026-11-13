@@ -1,24 +1,28 @@
-# estilo em skill
+# estilo em skill: todo vídeo seu no mesmo estilo, só trocando o tema
 
-> Guia: (em breve)
+[![estilo em skill: seu estilo vira skill](guia/assets/banner.jpg)](https://inematds.github.io/estilo-em-skill/guia/)
 
-**Você vê um vídeo explicativo com um visual que adora, tenta repetir e cada vídeo seu sai com uma cara
-diferente. Com o método "estilo em skill", o seu Claude Code ou Codex aprende aquele ESTILO uma vez e passa
-a fazer todo vídeo novo com a mesma cara: você só diz o tema.** Este kit faz isso e mostra que funciona.
+**🇧🇷 [Português](README.md) · 🇺🇸 [English](README.en.md) · 🇪🇸 [Español](README.es.md)**
+
+## O que é
+
+Você vê um vídeo com um estilo visual que adora, tenta repetir e cada vídeo seu sai com uma cara diferente. O **estilo em skill** é um kit grátis que estuda a linguagem visual desse vídeo (cores, letras, composição, movimento) e guarda tudo numa skill, um arquivo de instruções que o Claude Code ou o Codex segue. Depois você diz só o tema, e a skill faz o vídeo inteiro com a mesma cara: storyboard, cenas animadas, narração numa voz só, uma trilha e uma conferência antes de dizer "pronto". É para quem cria vídeo curto e não programa; você precisa do Claude Code ou do Codex, de uma ferramenta que gere imagem e de três programas grátis no computador.
+
+## 📖 Guia de uso
+
+Guia completo (landing + passo a passo): **https://inematds.github.io/estilo-em-skill/guia/**
 
 ![Demo cordel: um quadro de cada cena do vídeo final](exemplos/cordel/final/folha-final.jpg)
 
-## O que é
+## Como funciona
 
 Um kit aberto que transforma o **estilo** (não o conteúdo) de um vídeo de referência numa **skill**
 reutilizável. Depois de instalada, você dá só cinco dados (tema, formato, duração, resolução e motor) e a
 skill planeja as cenas, desenha o storyboard no estilo, escreve a narração, anima, põe uma trilha única e
 entrega `final/video-final.mp4` + `final/manifesto.json`, **conferidos por um script** antes de dizer "pronto".
 
-```
-vídeo de referência → quadros escolhidos sozinhos → a IA escreve a "bíblia do estilo" → skill instalada
-   → storyboard (até 6 cenas de 2,5 s) → cenas animadas → narração numa voz só → trilha única → vídeo + manifesto + validação
-```
+**vídeo de referência → quadros escolhidos sozinhos → a IA escreve a "bíblia do estilo" → skill instalada
+→ storyboard (até 6 cenas de 2,5 s) → cenas animadas → narração numa voz só → trilha única → vídeo + manifesto + validação**
 
 ## Para quem
 
@@ -32,7 +36,7 @@ Para quem cria vídeo (reels, shorts, explicativos), tem 30+ anos, não é progr
 | Claude Code **ou** Codex | ver os quadros, escrever a bíblia, rodar a skill, gerar o storyboard | abrir no terminal |
 | ffmpeg (traz o ffprobe) | cortar, animar, juntar, medir o áudio | `ffmpeg -version` |
 | Python 3 | rodar os scripts | `python3 --version` |
-| Pillow | mexer nas imagens | `python3 -c "import PIL"` (instalar: `python3 -m pip install --user Pillow`) |
+| Pillow | mexer nas imagens | `python3 -c "import PIL"` (instalar no Ubuntu: `sudo apt install python3-pil`; no Mac: `brew install pillow`) |
 | uma voz | narração | você grava, ou um TTS local (opcional: edge-tts) |
 | uma música sua ou com licença | trilha | um `.mp3`/`.wav` |
 
@@ -102,7 +106,9 @@ O kit não chama nenhuma API. Nos motores de IA, quem roda é você, na sua cont
 - `validar.py` confere arquivos do manifesto, duração ±0,5 s, resolução, vídeo + áudio, áudio e narração que
   não são silêncio, trilha presente e `status: completo`. Se algo falha, sai com erro e diz o que falta.
 
-Testes: `bash tests/rodar.sh` (sem pytest; imagens sintéticas e tons senoidais no lugar de voz e música).
+Testes: `bash tests/rodar.sh` (sem pytest; imagens sintéticas e tons senoidais no lugar de voz e música; 24/24 passando no Ubuntu).
+
+O kit foi feito e testado no Linux (Ubuntu). No Mac não foi testado: o `scripts/instalar.sh` usa o `sed -i` do Linux e o `tests/rodar.sh` usa `timeout`; para instalar a skill no Mac, siga o caminho manual do guia (passo 4).
 
 ## A demo: cordel
 
