@@ -12,6 +12,8 @@ You see a video with a visual style you love, try to repeat it, and every video 
 
 Complete guide (landing page + step-by-step instructions): **https://inematds.github.io/estilo-em-skill/guia/en/**
 
+🎬 Video: https://www.youtube.com/watch?v=bphIJzdykNU · Short: https://youtube.com/shorts/mSEYJ8zA-zU
+
 ![Cordel demo: one frame from each scene in the finished video](exemplos/cordel/final/folha-final.jpg)
 
 ## How it works

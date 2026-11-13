@@ -12,6 +12,8 @@ Ves un video con un estilo visual que te encanta, intentas repetirlo y cada vide
 
 Guía completa (página de presentación + paso a paso): **https://inematds.github.io/estilo-em-skill/guia/es/**
 
+🎬 Video: https://www.youtube.com/watch?v=bphIJzdykNU · Short: https://youtube.com/shorts/mSEYJ8zA-zU
+
 ![Demo de cordel: un cuadro de cada escena del video final](exemplos/cordel/final/folha-final.jpg)
 
 ## Cómo funciona
