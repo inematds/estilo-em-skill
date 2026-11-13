@@ -22,6 +22,7 @@
 
 ## Animação (motor local)
 - Movimento lento e contínuo; zoom máximo 1,25× (padrão 1,18×). Nada de tremida, chicote ou zoom rápido.
+- O painel entra com 8% de respiro sobre a cor da calha (como gravura no papel): o zoom não corta a palavra.
 - Dissolve de 0,5 s entre cenas; o vídeo mantém a duração exata. Fade curto no fim.
 - 30 fps, na resolução pedida.
 

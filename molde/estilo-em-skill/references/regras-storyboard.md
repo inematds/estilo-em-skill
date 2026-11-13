@@ -18,7 +18,11 @@ A grade de cada storyboard está no `saida/plano.json` (`linhas`, `colunas`, `pa
 3. **Ordem de leitura**: esquerda → direita, de cima para baixo. Painel 1 = primeira cena do storyboard.
 4. **Uma palavra-chave grande por painel** (1 palavra; no máximo 2 curtas), em MAIÚSCULAS, ≤ 10 letras.
    Prefira palavras sem acento; se tiver acento, confira com zoom depois.
-5. **Zona segura**: palavra e assunto principal dentro dos 70% centrais do painel (nada encostado na borda).
+5. **Zona segura**: a palavra ocupa **no máximo 60% da largura do painel**, centrada, com margem livre dos dois
+   lados; nunca de borda a borda. O corte para o formato e o zoom de até 1,18× comem uns 25% da largura
+   (teste da demo cordel: "REPETIR" de borda a borda perdeu o R e o R no zoom). Assunto principal também no centro.
+   A ferramenta de imagem nem sempre obedece (na demo, duas tentativas saíram de borda a borda). Por isso o
+   `recortar.py` põe 8% de respiro em volta de cada painel (`--respiro`): a garantia fica no script, não no pedido.
 6. **Nenhum outro texto**: sem número de painel, sem legenda, sem balão, sem marca d'água, sem assinatura.
 7. **Estilo da bíblia** em todos os painéis: cole a frase de estilo (seção 15 de `estilo.md`) inteira.
 8. **Personagem recorrente** descrito com as mesmas palavras em todo pedido (roupa, cor, acessório).

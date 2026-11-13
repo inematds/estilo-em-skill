@@ -5,6 +5,9 @@
 - Procura a calha (faixa clara ou escura e lisa) entre os painéis perto de onde ela deveria estar;
   se não achar, corta em grade fixa.
 - Cada painel é redimensionado em "cover" (preenche sem distorcer, corta a sobra no centro).
+- Respiro (padrão 8% de cada lado): o painel fica um pouco menor, sobre a cor da calha, como uma gravura
+  impressa no papel. Assim o zoom/pan da animação não corta a palavra, mesmo quando a ferramenta de imagem
+  desenha a palavra de borda a borda (aconteceu na demo cordel). --respiro 0 desliga.
 
 Uso:
   python3 recortar.py storyboard.png --linhas 2 --colunas 3 [--paineis 6] --resolucao 1080x1920 \
@@ -28,32 +31,30 @@ except ImportError:  # pragma: no cover
 
 
 def _perfil(img_l: Image.Image, eixo: str):
-    """Para cada coluna (eixo='x') ou linha (eixo='y'): (média, desvio) da luminância."""
+    """Para cada coluna (eixo='x') ou linha (eixo='y'): (mediana, fração de pixels perto da mediana).
+
+    Mediana + fração (e não média + desvio) para tolerar um detalhe que cruza a calha, como o fio
+    condutor passando de um painel para o outro (aconteceu na demo cordel)."""
     w, h = img_l.size
-    pequena = img_l
     # reduz o outro eixo para acelerar sem perder a posição exata no eixo medido
     if eixo == "x":
         pequena = img_l.resize((w, max(1, min(h, 400))))
         W, H = pequena.size
         px = pequena.load()
-        for x in range(W):
-            vals = [px[x, y] for y in range(H)]
-            m = sum(vals) / H
-            d = (sum((v - m) ** 2 for v in vals) / H) ** 0.5
-            yield m, d
+        linhas = ([px[x, y] for y in range(H)] for x in range(W))
     else:
         pequena = img_l.resize((max(1, min(w, 400)), h))
         W, H = pequena.size
         px = pequena.load()
-        for y in range(H):
-            vals = [px[x, y] for x in range(W)]
-            m = sum(vals) / W
-            d = (sum((v - m) ** 2 for v in vals) / W) ** 0.5
-            yield m, d
+        linhas = ([px[x, y] for x in range(W)] for y in range(H))
+    for vals in linhas:
+        med = sorted(vals)[len(vals) // 2]
+        perto = sum(1 for v in vals if abs(v - med) <= 18) / len(vals)
+        yield med, perto
 
 
-def _lisa(m, d, desvio_max=14.0):
-    return d <= desvio_max and (m >= 200 or m <= 55)
+def _lisa(med, perto, fracao_min=0.85):
+    return perto >= fracao_min and (med >= 185 or med <= 60)
 
 
 def achar_cortes(img_l: Image.Image, partes: int, eixo: str) -> tuple[list[tuple[int, int]], bool]:
@@ -126,8 +127,31 @@ def cover(img: Image.Image, w: int, h: int) -> Image.Image:
     return out
 
 
-def recortar(arquivo, linhas, colunas, paineis, resolucao, saida, inicio=1, prefixo="painel") -> dict:
+def cor_da_calha(img: Image.Image) -> tuple[int, int, int]:
+    """Mediana das bordas externas da folha (onde fica a calha)."""
+    w, h = img.size
+    tiras = [img.crop((0, 0, w, 3)), img.crop((0, h - 3, w, h)), img.crop((0, 0, 3, h)), img.crop((w - 3, 0, w, h))]
+    canais = [[], [], []]
+    for t in tiras:
+        for px in t.resize((max(1, t.width // 4), max(1, t.height // 4))).getdata():
+            for i in range(3):
+                canais[i].append(px[i])
+    return tuple(sorted(c)[len(c) // 2] for c in canais)
+
+
+def com_respiro(painel: Image.Image, w: int, h: int, respiro: float, fundo) -> Image.Image:
+    if respiro <= 0:
+        return cover(painel, w, h)
+    iw, ih = round(w * (1 - 2 * respiro)) // 2 * 2, round(h * (1 - 2 * respiro)) // 2 * 2
+    tela = Image.new("RGB", (w, h), fundo)
+    tela.paste(cover(painel, iw, ih), ((w - iw) // 2, (h - ih) // 2))
+    return tela
+
+
+def recortar(arquivo, linhas, colunas, paineis, resolucao, saida, inicio=1, prefixo="painel",
+             respiro=0.08) -> dict:
     img = Image.open(arquivo).convert("RGB")
+    fundo = cor_da_calha(img)
     lum = img.convert("L")
     w, h = resolucao
     linhas_iv, achou_y = achar_cortes(lum, linhas, "y")
@@ -146,13 +170,14 @@ def recortar(arquivo, linhas, colunas, paineis, resolucao, saida, inicio=1, pref
             if ImageStat.Stat(painel.convert("L")).stddev[0] < 3:
                 aviso(f"painel {n + 1} parece vazio (cor lisa) em {arquivo}")
             destino = saida / f"{prefixo}-{inicio + n:02d}.png"
-            cover(painel, w, h).save(destino)
+            com_respiro(painel, w, h, respiro, fundo).save(destino)
             gerados.append({"arquivo": str(destino), "origem_px": [x0, y0, x1, y1]})
             n += 1
     if n < paineis:
         erro(f"pedi {paineis} painéis mas a grade {linhas}×{colunas} só tem {n}")
     modo = "calha" if all(m == "calha" for m in metodo) else "grade_fixa"
     return {"storyboard": str(arquivo), "linhas": linhas, "colunas": colunas, "paineis": gerados,
+            "respiro": respiro, "cor_calha": "#%02X%02X%02X" % fundo,
             "metodo": modo, "tamanho_storyboard": list(img.size),
             "tamanho_painel_origem": [gerados[0]["origem_px"][2] - gerados[0]["origem_px"][0],
                                       gerados[0]["origem_px"][3] - gerados[0]["origem_px"][1]]}
@@ -167,6 +192,7 @@ def main():
     ap.add_argument("--resolucao", default="1080x1920")
     ap.add_argument("--saida", default="saida/paineis")
     ap.add_argument("--inicio", type=int, default=1, help="número do primeiro painel (cena)")
+    ap.add_argument("--respiro", type=float, default=0.08, help="margem de cada lado, 0–0.2 (0 = cover puro)")
     ap.add_argument("--plano", help="plano.json (lê grade, nomes e resolução de lá)")
     ap.add_argument("--storyboard", dest="sb", type=int, help="número do storyboard no plano")
     ap.add_argument("--pasta", default=".")
@@ -184,7 +210,7 @@ def main():
             if not arq.exists():
                 erro(f"storyboard não encontrado: {arq}")
             info = recortar(arq, s["linhas"], s["colunas"], s["paineis"], res, pasta / "saida" / "paineis",
-                            inicio=s["cenas"][0], prefixo="cena")
+                            inicio=s["cenas"][0], prefixo="cena", respiro=a.respiro)
             gravar_json(pasta / "saida" / "paineis" / f"recorte-storyboard-{s['numero']}.json", info)
             print(f"storyboard {s['numero']}: {len(info['paineis'])} painéis ({info['metodo']}), "
                   f"painel de origem {info['tamanho_painel_origem'][0]}x{info['tamanho_painel_origem'][1]} px")
@@ -195,7 +221,8 @@ def main():
     paineis = a.paineis or a.linhas * a.colunas
     if paineis > a.linhas * a.colunas:
         erro(f"{paineis} painéis não cabem numa grade {a.linhas}×{a.colunas}")
-    info = recortar(a.storyboard, a.linhas, a.colunas, paineis, parse_resolucao(a.resolucao), a.saida, a.inicio)
+    info = recortar(a.storyboard, a.linhas, a.colunas, paineis, parse_resolucao(a.resolucao), a.saida, a.inicio,
+                    respiro=a.respiro)
     print(json.dumps({"paineis": len(info["paineis"]), "metodo": info["metodo"],
                       "painel_origem": info["tamanho_painel_origem"]}, ensure_ascii=False))
 

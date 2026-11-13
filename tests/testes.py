@@ -151,9 +151,25 @@ def t_recortar_23():
     import recortar
     arq = TMP / "sb-2x3.png"
     caixas = folha_sintetica(arq, 2, 3, 300, 533, 24, (245, 238, 220), margens=(60, 20, 12, 40))
-    info = recortar.recortar(arq, 2, 3, 6, (270, 480), TMP / "rec23")
+    info = recortar.recortar(arq, 2, 3, 6, (270, 480), TMP / "rec23", respiro=0)
     assert info["metodo"] == "calha", info["metodo"]
     confere_recorte(TMP / "rec23", caixas, info)
+
+
+@caso("recortar: acha a calha mesmo com o fio condutor cruzando de um painel ao outro")
+def t_recortar_fio():
+    import recortar
+    arq = TMP / "sb-fio.png"
+    caixas = folha_sintetica(arq, 2, 3, 300, 533, 20, (248, 216, 160), margens=(40, 30, 25, 35))
+    im = Image.open(arq)
+    d = ImageDraw.Draw(im)
+    d.line([(0, 300), (im.width, 330)], fill=(242, 194, 48), width=16)      # fio na linha de cima
+    d.line([(0, 870), (im.width, 840)], fill=(242, 194, 48), width=16)      # e na de baixo
+    d.line([(150, 0), (170, im.height)], fill=(242, 194, 48), width=10)     # e um descendo dentro dos painéis
+    im.save(arq)
+    info = recortar.recortar(arq, 2, 3, 6, (270, 480), TMP / "recfio", respiro=0)
+    assert info["metodo"] == "calha", info["metodo"]
+    confere_recorte(TMP / "recfio", caixas, info)
 
 
 @caso("recortar: grade parcial 2×2 com calha escura")
@@ -161,7 +177,7 @@ def t_recortar_22():
     import recortar
     arq = TMP / "sb-2x2.png"
     caixas = folha_sintetica(arq, 2, 2, 320, 568, 18, (12, 12, 12))
-    info = recortar.recortar(arq, 2, 2, 4, (270, 480), TMP / "rec22")
+    info = recortar.recortar(arq, 2, 2, 4, (270, 480), TMP / "rec22", respiro=0)
     assert info["metodo"] == "calha"
     confere_recorte(TMP / "rec22", caixas, info)
 
@@ -184,9 +200,22 @@ def t_recortar_fixa():
     import recortar
     arq = TMP / "sb-sem-calha.png"
     caixas = folha_sintetica(arq, 2, 3, 300, 533, 0, (0, 0, 0), margens=(0, 0, 0, 0))
-    info = recortar.recortar(arq, 2, 3, 6, (270, 480), TMP / "recfixa")
+    info = recortar.recortar(arq, 2, 3, 6, (270, 480), TMP / "recfixa", respiro=0)
     assert info["metodo"] == "grade_fixa", info["metodo"]
     confere_recorte(TMP / "recfixa", caixas, info, tol=6)
+
+
+@caso("recortar: respiro põe o painel sobre a cor da calha (zoom não corta a palavra)")
+def t_recortar_respiro():
+    import recortar
+    arq = TMP / "sb-2x3.png"
+    info = recortar.recortar(arq, 2, 3, 6, (270, 480), TMP / "recresp", respiro=0.1)
+    assert info["cor_calha"] == "#F5EEDC", info["cor_calha"]
+    im = Image.open(info["paineis"][0]["arquivo"]).convert("RGB")
+    assert im.size == (270, 480)
+    assert im.getpixel((5, 5)) == (245, 238, 220) and im.getpixel((264, 474)) == (245, 238, 220)
+    r, g, b = im.getpixel((135, 100))
+    assert (r, g, b) != (245, 238, 220), "o miolo deveria ser o painel"
 
 
 # ---------------------------------------------------------------- fluxo curto: animar → narrar → montar → validar
@@ -318,6 +347,41 @@ def t_motores_prompts():
     py(SCRIPTS / "animar.py", "--pasta", p, "--motor", "seedance", "--so-prompts")
     md = (p / "saida" / "prompts-seedance.md").read_text()
     assert "Sem música" in md and "0.0–2.5 s" in md
+
+
+@caso("pedido_storyboard: monta o pedido do molde com grade, frase de estilo e palavras de cada painel")
+def t_pedido_storyboard():
+    p = TMP / "fluxo-ok"
+    est = TMP / "estilo-teste.md"
+    est.write_text("# Bíblia\n\n## 9. Motivos recorrentes\n- **Fio condutor**: uma fita azul.\n\n"
+                   "## 15. Frase de estilo para colar em todo pedido de imagem\nRecorte de papel azul (#0000FF).\n")
+    r = py(SCRIPTS / "pedido_storyboard.py", "--pasta", p, "--estilo", est)
+    txt = (p / "saida" / "storyboards" / "pedido-storyboard-1.txt").read_text()
+    assert "Recorte de papel azul (#0000FF)." in txt and "uma fita azul. Ele entra" in txt, txt[:400]
+    assert 'Painel 2 — palavra "CENA 2"' in txt and "1 linha(s) × 2 coluna(s)" in txt and "{" not in txt, r.stdout
+    est.write_text("## 15. Frase de estilo\nPREENCHER\n")
+    r = py(SCRIPTS / "pedido_storyboard.py", "--pasta", p, "--estilo", est, ok=False)
+    assert r.returncode != 0 and "não foi preenchida" in r.stderr
+
+
+# ---------------------------------------------------------------- instalar.sh
+@caso("instalar: Claude Code em .claude/skills/<nome>, Codex em .agents/skills/<nome>, nome no SKILL.md")
+def t_instalar():
+    proj = TMP / "proj-instalar"
+    proj.mkdir(exist_ok=True)
+    estilo = proj / "estilo.md"
+    estilo.write_text("# Bíblia do estilo: teste\n\n## 15. Frase de estilo\nTudo azul.\n")
+    for alvo, pasta in (("claude", ".claude"), ("codex", ".agents")):
+        r = subprocess.run(["bash", str(RAIZ / "scripts" / "instalar.sh"), "Meu Estilo!", alvo, "--estilo", str(estilo),
+                            "--projeto", str(proj)], capture_output=True, text=True)
+        assert r.returncode == 0, r.stdout + r.stderr
+        dest = proj / pasta / "skills" / "meu-estilo"
+        assert (dest / "SKILL.md").read_text().splitlines()[1] == "name: meu-estilo"
+        assert (dest / "references" / "estilo.md").read_text() == estilo.read_text()
+        assert (dest / "scripts" / "validar.py").exists()
+    r = subprocess.run(["bash", str(RAIZ / "scripts" / "instalar.sh"), "meu-estilo", "--projeto", str(proj)],
+                       capture_output=True, text=True)
+    assert r.returncode != 0 and "--forcar" in r.stdout, "não pode sobrescrever sem --forcar"
 
 
 # ---------------------------------------------------------------- quadros.py
