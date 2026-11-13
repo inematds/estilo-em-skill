@@ -128,14 +128,16 @@ Resultado (conferido pelo `validar.py`):
   ok   30 arquivos do manifesto existem
   ok   duração 30.00 s (pedido 30 s ± 0,5)
   ok   resolução 1080x1920
-  ok   áudio do vídeo com som (média -20.1 dB, pico -3.7 dB)
-  ok   narração com voz (média -18.5 dB)
+  ok   áudio do vídeo com som (média -20.2 dB, pico -3.9 dB)
+  ok   narração com voz (média -18.9 dB)
 PASSOU: vídeo conferido, pode dizer pronto.
 ```
 
 - MP4: 30,0 s, 1080×1920, 30 fps, H.264 + AAC, 23 MB. Render local (motor `local`): 78 s nesta máquina.
-- Voz: TTS local (chatterbox, clonando uma voz de referência), 12 falas; as 12 frases conferidas com uma
-  transcrição local (Whisper) batem com o roteiro. Uma fala (cena 4) passa 0,36 s da cena, com aviso.
+- Voz: TTS local (chatterbox, clonando uma voz de referência), 12 falas, nenhuma passando da cena. A voz
+  local às vezes inventa um pedaço depois da frase: o `narrar.py` refez falas longas demais, cortou caudas
+  baixas e a cena 3 foi refeita sozinha com `--refazer 3`. As 12 frases, conferidas com uma transcrição local
+  (Whisper, `saida/voz/transcricao-conferencia.srt`), batem com o roteiro.
 - Trilha: `assets/trilha/energia.mp3` (própria), volume 0,5, abaixando sob a voz.
 - No repositório ficam os painéis em JPG (`paineis-jpg/`); os PNG, clipes e o vídeo mudo são gerados de novo
   ao rodar. Por isso, num clone, confira com `python3 skill/scripts/validar.py --sem-intermediarios`.
@@ -156,7 +158,10 @@ funcionou foi no script (`--respiro`). Veja `exemplos/cordel/LICOES.md`.
   acento erram menos.
 - **Motor local não anima o desenho**: é câmera passeando pela ilustração + dissolve. Para personagem se
   mexendo de verdade, use um motor de IA de vídeo (não testado aqui).
-- **edge-tts** usa um serviço online e não foi testado neste kit; a demo usou TTS local.
+- **edge-tts** usa um serviço online e não foi testado neste kit; a demo usou TTS local. O modo `--inemavox`
+  chama o `tts_direct.py` de uma instalação local do inemavox; a API HTTP dele (porta 8010) não está implementada.
+- **Voz local inventa som**: o corte de cauda é conservador (só tira o que é bem mais baixo ou muito curto).
+  Um "som" alto sem palavra depois da frase só é pego ouvindo ou transcrevendo; aí use `--refazer N`.
 - **Continuidade** entre storyboards é pedida (o anterior vai como referência), mas não é garantida: confira.
 - A bíblia é escrita pela IA olhando quadros: confira as cores e o "o que não fazer" antes de usar.
 - Use só referências e músicas que você pode usar. O método copia a linguagem visual, não personagens, logos

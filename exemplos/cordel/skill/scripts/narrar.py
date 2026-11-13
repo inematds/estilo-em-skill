@@ -71,6 +71,51 @@ CORTA_PONTAS = ("silenceremove=start_periods=1:start_threshold=-40dB:start_silen
                 "areverse,silenceremove=start_periods=1:start_threshold=-40dB:start_silence=0.05,areverse")
 
 
+def cortar_cauda(pcm: array.array, palavras: int) -> tuple[array.array, float]:
+    """Corta "cauda" inventada pelo TTS depois da frase: um pedaço separado por pausa (≥ 0,12 s) que é
+    muito curto (< 0,25 s) ou muito mais baixo (≥ 8 dB) que a fala. Só corta se sobrar fala suficiente para o
+    nº de palavras (0,22 s/palavra). Visto na demo: "Um agente de IA faz isso." + 1,2 s de murmúrio 14 dB
+    mais baixo. Conservador de propósito: com 3 dB / 0,5 s ele cortou "de novo" de verdade (demo cordel)."""
+    import math
+    fr = int(TAXA * 0.02)
+    dbs = []
+    for i in range(0, len(pcm) - fr + 1, fr):
+        r = math.sqrt(sum(x * x for x in pcm[i:i + fr]) / fr) or 1e-9
+        dbs.append(20 * math.log10(r / 32768))
+    if not dbs:
+        return pcm, 0.0
+    lim = max(dbs) - 30
+    voz = [d > lim for d in dbs]
+    segs, i, n = [], 0, len(voz)
+    while i < n:
+        if voz[i]:
+            j = i
+            while j < n and (voz[j] or any(voz[j:j + 6])):    # pausa menor que 120 ms não separa
+                j += 1
+            segs.append((i, j))
+            i = j
+        else:
+            i += 1
+
+    def media(a, b):
+        return 10 * math.log10(sum(10 ** (d / 10) for d in dbs[a:b]) / max(1, b - a))
+    while len(segs) > 1:
+        a, b = segs[-1]
+        corpo = media(segs[0][0], segs[-2][1])
+        curta, baixa = (b - a) * 0.02 < 0.25, media(a, b) <= corpo - 8
+        if (curta or baixa) and segs[-2][1] * 0.02 >= 0.22 * palavras:
+            segs.pop()
+        else:
+            break
+    fim = min(len(pcm), (segs[-1][1] + 3) * fr) if segs else len(pcm)
+    return array.array("h", pcm[:fim]), (len(pcm) - fim) / TAXA
+
+
+def limpar(arq: Path, texto: str, tts: bool) -> tuple[array.array, float]:
+    pcm = ler_pcm(arq, CORTA_PONTAS)
+    return cortar_cauda(pcm, len(texto.split())) if tts and pcm else (pcm, 0.0)
+
+
 def limite_fala(texto: str) -> float:
     """Duração máxima razoável de uma fala (s). Acima disso o TTS provavelmente inventou um pedaço a mais
     (visto com chatterbox em frases curtas: 4 palavras viraram 4,6 s)."""
@@ -127,6 +172,8 @@ def main():
     ap.add_argument("--engine", default="chatterbox")
     ap.add_argument("--lingua", default="pt")
     ap.add_argument("--voz", default="pt-BR-AntonioNeural", help="voz do edge-tts")
+    ap.add_argument("--refazer", help="TTS: refaz só estas cenas (ex.: 3,7) e reaproveita as outras falas "
+                    "da rodada anterior (saida/voz/encaixe.json)")
     ap.add_argument("--tentativas", type=int, default=3,
                     help="TTS: gera de novo a fala longa demais para o nº de palavras (fica a mais curta)")
     a = ap.parse_args()
@@ -140,6 +187,14 @@ def main():
     voz_dir.mkdir(parents=True, exist_ok=True)
     destino = voz_dir / "narracao.wav"
     relatorio = {"modo": None, "duracao_s": total, "falas": [], "avisos": []}
+    anteriores = {}
+    refazer = None
+    if a.refazer:
+        refazer = {int(x) for x in a.refazer.replace(" ", "").split(",") if x}
+        enc_ant = voz_dir / "encaixe.json"
+        if not enc_ant.exists():
+            erro("--refazer precisa de uma rodada anterior (saida/voz/encaixe.json)")
+        anteriores = {f["cena"]: f for f in ler_json(enc_ant)["falas"]}
 
     if a.arquivo:
         relatorio["modo"] = "arquivo"
@@ -166,12 +221,18 @@ def main():
                     aviso(f"sem gravação para a cena {c['numero']} em {a.falas_dir}; cena fica sem fala")
                     continue
                 bruto = achados[0]
+            elif refazer is not None and c["numero"] not in refazer and c["numero"] in anteriores \
+                    and anteriores[c["numero"]]["texto"] == texto and Path(anteriores[c["numero"]]["arquivo"]).exists():
+                bruto = Path(anteriores[c["numero"]]["arquivo"])
             else:
                 print(f"  voz da cena {c['numero']}: {texto}", flush=True)
                 melhor = None
+                nome = f"cena-{c['numero']:02d}"
+                if refazer is not None:     # não apaga as falas da rodada anterior
+                    nome += f"-r{len(list((voz_dir / 'falas').glob(nome + '-*')))}"
                 for tent in range(1, max(1, a.tentativas) + 1):
-                    arq = tts_uma(modo, texto, voz_dir / "falas" / f"cena-{c['numero']:02d}-t{tent}", a)
-                    d = len(ler_pcm(arq, CORTA_PONTAS)) / TAXA
+                    arq = tts_uma(modo, texto, voz_dir / "falas" / f"{nome}-t{tent}", a)
+                    d = len(limpar(arq, texto, True)[0]) / TAXA
                     if melhor is None or d < melhor[1]:
                         melhor = (arq, d)
                     if d <= limite_fala(texto):
@@ -179,7 +240,9 @@ def main():
                     print(f"    {d:.2f} s é demais para {len(texto.split())} palavras (limite {limite_fala(texto):.2f} s); "
                           f"gerando de novo", flush=True)
                 bruto = melhor[0]
-            pcm = ler_pcm(bruto, CORTA_PONTAS)
+            pcm, cauda = limpar(bruto, texto, modo != "falas")
+            if cauda > 0:
+                print(f"    cena {c['numero']}: cortei {cauda:.2f} s de cauda do TTS depois da frase", flush=True)
             if not pcm or pico_db(pcm) < SILENCIO_DB:
                 erro(f"a fala da cena {c['numero']} saiu MUDA (pico {pico_db(pcm) if pcm else '-inf'} dB) em {bruto}. "
                      "Confira o motor de voz antes de seguir.")
@@ -188,12 +251,16 @@ def main():
             acel = 1.0
             if dur > vaga:
                 acel = min(ACELERA_MAX, dur / vaga)
-                pcm = ler_pcm(bruto, f"{CORTA_PONTAS},atempo={acel:.4f}")
+                limpo = voz_dir / f"limpo-cena-{c['numero']:02d}.wav"
+                gravar_wav(limpo, pcm)
+                pcm = ler_pcm(limpo, f"atempo={acel:.4f}")
+                limpo.unlink()
                 dur = len(pcm) / TAXA
             inicio = max(c["inicio_s"] + FOLGA_INICIO, cursor + 0.08)
             fim = inicio + dur
             info = {"cena": c["numero"], "texto": texto, "inicio_s": round(inicio, 3), "fim_s": round(fim, 3),
-                    "duracao_s": round(dur, 3), "acelerou": round(acel, 3), "arquivo": str(bruto)}
+                    "duracao_s": round(dur, 3), "acelerou": round(acel, 3), "cauda_cortada_s": round(cauda, 3),
+                    "arquivo": str(bruto)}
             if fim > c["fim_s"] + 0.05:
                 palavras = len(texto.split())
                 if dur <= vaga:

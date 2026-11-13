@@ -345,6 +345,42 @@ ffmpeg -y -loglevel error -f lavfi -i sine=frequency=220:duration=$d "$1/fala.wa
     py(SCRIPTS / "narrar.py", "--pasta", p, "--comando", VOZ_TOM)      # deixa o projeto como estava
 
 
+@caso("narrar: corta a cauda baixa que o TTS inventa, mas não a última palavra de verdade")
+def t_narrar_cauda():
+    p = TMP / "fluxo-ok"
+
+    def tts_com_cauda(nome, vol_cauda, dur_cauda):
+        arq = TMP / nome
+        arq.write_text(f"""ffmpeg -y -loglevel error -f lavfi -i "sine=frequency=220:duration=1.0" -f lavfi -i "anullsrc=r=48000:cl=mono" \\
+  -f lavfi -i "sine=frequency=180:duration={dur_cauda}" -filter_complex \\
+  "[0:a]aresample=48000,volume=1.0[a];[1:a]atrim=0:0.3[b];[2:a]aresample=48000,volume={vol_cauda}[c];[a][b][c]concat=n=3:v=0:a=1" \\
+  "$1/fala.wav"
+""")
+        py(SCRIPTS / "narrar.py", "--pasta", p, "--comando", f"bash {arq} {{saida}}")
+        return json.loads((p / "saida" / "voz" / "encaixe.json").read_text())["falas"]
+
+    # murmúrio 12 dB mais baixo depois da frase → cortado
+    falas = tts_com_cauda("tts-cauda.sh", 0.25, 0.8)
+    assert all(0.9 < f["duracao_s"] < 1.15 and f["cauda_cortada_s"] > 0.9 for f in falas), falas
+    # palavra final de verdade, no mesmo volume, depois de uma pausa (o "de novo") → fica
+    falas = tts_com_cauda("tts-palavra.sh", 0.9, 0.5)
+    assert all(f["duracao_s"] > 1.7 and f["cauda_cortada_s"] == 0 for f in falas), falas
+    py(SCRIPTS / "narrar.py", "--pasta", p, "--comando", VOZ_TOM)      # deixa o projeto como estava
+
+
+@caso("narrar --refazer: refaz só a cena pedida e reaproveita as outras falas")
+def t_narrar_refazer():
+    p = TMP / "fluxo-ok"
+    py(SCRIPTS / "narrar.py", "--pasta", p, "--comando", VOZ_TOM)
+    antes = json.loads((p / "saida" / "voz" / "encaixe.json").read_text())["falas"]
+    outro = VOZ_TOM.replace("frequency=220", "frequency=260")
+    r = py(SCRIPTS / "narrar.py", "--pasta", p, "--comando", outro, "--refazer", "2")
+    depois = json.loads((p / "saida" / "voz" / "encaixe.json").read_text())["falas"]
+    assert depois[0]["arquivo"] == antes[0]["arquivo"] and depois[1]["arquivo"] != antes[1]["arquivo"], depois
+    assert r.stdout.count("voz da cena") == 1, r.stdout
+    assert Path(depois[0]["arquivo"]).exists() and Path(depois[1]["arquivo"]).exists()
+
+
 @caso("narrar RECUSA voz muda (TTS que grava silêncio)")
 def t_narrar_mudo():
     p = TMP / "fluxo-ok"

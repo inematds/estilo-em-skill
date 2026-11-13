@@ -12,6 +12,7 @@
 | 45 s | 18 | 3 (6 + 6 + 6) |
 
 ## Roteiro (roteiro.json)
+- **personagem** (no topo do arquivo): quem aparece em várias cenas, descrito sempre com as mesmas palavras.
 - **Fala**: até 6 palavras por cena (2,5 s ≈ 6 palavras faladas sem correr). Frase completa, como se fala com alguém.
 - **1ª cena**: abre pela dor ou pelo desejo de quem assiste, em "você". Nada de "Neste vídeo…" ou "Imagina…".
 - **Última cena**: fecha com o ganho (o que a pessoa leva) ou uma pergunta de verdade.

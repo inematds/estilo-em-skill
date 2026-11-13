@@ -32,25 +32,32 @@ python3 SKILL_DIR/scripts/cenas.py --tema "<tema>" --duracao <s> --formato <f> -
 Mostra quantas cenas (2,5 s cada) e storyboards (até 6 cenas cada). Se avisar que normalizou a duração, conte ao usuário.
 
 ## Passo 3 — roteiro (você escreve)
-Escreva `roteiro.json` com uma entrada por cena (`texto_tela`, `fala`, `acao`, `camera`) seguindo
-`references/regras-video.md` (fala de até 6 palavras por cena, uma palavra-chave grande por cena, a 1ª cena
-abre pela dor ou pelo desejo de quem vê, em "você"). Depois:
+Escreva `roteiro.json` seguindo `references/regras-video.md` (fala de até 6 palavras por cena, uma
+palavra-chave grande por cena, a 1ª cena abre pela dor ou pelo desejo de quem vê, em "você"):
+```json
+{"personagem": "quem aparece em várias cenas, descrito sempre igual (roupa, cor, acessório)",
+ "cenas": [{"texto_tela": "PALAVRA", "fala": "frase curta falada", "acao": "o que se vê", "camera": "zoom_in"}]}
+```
+`personagem` vai para todo pedido de storyboard (sem ele, cada storyboard inventa uma pessoa). Depois:
 ```bash
 python3 SKILL_DIR/scripts/cenas.py ... --roteiro roteiro.json     # mesmo comando + o roteiro
 ```
 
 ## Passo 4 — storyboards no estilo
-Para cada storyboard do `saida/plano.json`, monte o pedido com `modelos/prompt-storyboard.md` (preencha com a
-bíblia + as cenas daquele storyboard) e gere UMA imagem com a sua ferramenta de imagem (Codex: `image_gen`;
-Claude Code: a ferramenta de imagem que você tiver, ou peça ao usuário para gerar e salvar).
-Salve em `saida/storyboards/storyboard-N.png`.
+Monte os pedidos (um por storyboard) a partir do molde + bíblia + plano + personagem:
+```bash
+python3 SKILL_DIR/scripts/pedido_storyboard.py          # → saida/storyboards/pedido-storyboard-N.txt
+```
+Envie cada pedido, sem reescrever, à sua ferramenta de imagem (Codex: `image_gen`; Claude Code: a ferramenta de
+imagem que você tiver, ou peça ao usuário para gerar e salvar). Salve em `saida/storyboards/storyboard-N.png`.
+Para mudar o pedido, mude o molde (`modelos/prompt-storyboard.md`) ou a bíblia, não o texto gerado.
 - Gere um de cada vez. Do 2º em diante, passe o storyboard anterior como imagem de referência (continuidade).
 - **Abra a imagem e confira** com a lista de `regras-storyboard.md` (grade certa, palavra exata letra por letra,
   estilo, continuidade). Amplie as palavras para conferir. Ruim → refaça (até 2 vezes) e anote em `references/licoes.md`.
 
 ## Passo 5 — recortar
 ```bash
-python3 SKILL_DIR/scripts/recortar.py --plano saida/plano.json
+python3 SKILL_DIR/scripts/recortar.py --plano saida/plano.json      # --respiro 0.08 (padrão) protege a palavra do zoom
 ```
 
 ## Passo 6 — animar
@@ -69,7 +76,10 @@ python3 SKILL_DIR/scripts/narrar.py --comando '<tts> {texto} {saida}'   # qualqu
 python3 SKILL_DIR/scripts/narrar.py --inemavox --inemavox-dir <pasta> --ref <voz.wav>
 python3 SKILL_DIR/scripts/narrar.py --edge                       # NÃO TESTADO (serviço online)
 ```
-Se avisar que uma fala passou da cena, encurte a fala no roteiro e rode de novo.
+Com TTS, o `narrar.py` corta a "cauda" que a voz às vezes inventa depois da frase e gera de novo a fala longa
+demais para o nº de palavras (`--tentativas 3`). Se avisar que uma fala passou da cena, encurte a fala no
+roteiro e rode de novo. Se puder, confira a narração com uma transcrição local (as frases batem com o roteiro?);
+fala com problema → `narrar.py ... --refazer N` refaz só a cena N.
 
 ## Passo 8 — montar com trilha única
 ```bash
