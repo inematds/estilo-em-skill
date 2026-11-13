@@ -13,7 +13,7 @@ Sai com código 0 se tudo passou; senão código 1 e a lista do que falta.
 
 Uso: python3 validar.py [--pasta .] [--duracao 30] [--resolucao 1080x1920] [--sem-intermediarios]
   --duracao/--resolucao: compara com o PEDIDO (padrão: o que está no manifesto)
-  --sem-intermediarios: não exige clipes/painéis (ex.: repositório que guarda só o final)
+  --sem-intermediarios: não exige clipes, painéis nem o vídeo mudo (ex.: repositório que guarda só o final)
 """
 from __future__ import annotations
 
@@ -51,10 +51,11 @@ def main():
     else:
         falhas.append(f"manifesto com status '{m.get('status')}' (faltando: {', '.join(m.get('faltando', [])) or '?'})")
 
-    arquivos = [("vídeo", m.get("video")), ("narração", m.get("narracao")), ("vídeo mudo", m.get("video_mudo"))]
+    arquivos = [("vídeo", m.get("video")), ("narração", m.get("narracao"))]
     arquivos += [("storyboard", s) for s in m.get("storyboards", [])]
     if not a.sem_intermediarios:
         arquivos += [("painel", p) for p in m.get("paineis", [])] + [("clipe", c) for c in m.get("clipes", [])]
+        arquivos.append(("vídeo mudo", m.get("video_mudo")))
     if m.get("trilha"):
         arquivos.append(("trilha", m["trilha"]))
     else:

@@ -21,7 +21,6 @@ from __future__ import annotations
 
 import argparse
 import array
-import json
 import shlex
 import shutil
 import subprocess
@@ -68,8 +67,14 @@ def pico_db(a: array.array) -> float:
     return -math.inf if p == 0 else 20 * math.log10(p / 32768)
 
 
-CORTA_PONTAS = ("silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,"
-                "areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,areverse")
+CORTA_PONTAS = ("silenceremove=start_periods=1:start_threshold=-40dB:start_silence=0.05,"
+                "areverse,silenceremove=start_periods=1:start_threshold=-40dB:start_silence=0.05,areverse")
+
+
+def limite_fala(texto: str) -> float:
+    """Duração máxima razoável de uma fala (s). Acima disso o TTS provavelmente inventou um pedaço a mais
+    (visto com chatterbox em frases curtas: 4 palavras viraram 4,6 s)."""
+    return 0.42 * len(texto.split()) + 0.9
 
 
 def tts_uma(modo, texto: str, pasta_fala: Path, a) -> Path:
@@ -122,6 +127,8 @@ def main():
     ap.add_argument("--engine", default="chatterbox")
     ap.add_argument("--lingua", default="pt")
     ap.add_argument("--voz", default="pt-BR-AntonioNeural", help="voz do edge-tts")
+    ap.add_argument("--tentativas", type=int, default=3,
+                    help="TTS: gera de novo a fala longa demais para o nº de palavras (fica a mais curta)")
     a = ap.parse_args()
 
     precisa("ffmpeg")
@@ -161,7 +168,17 @@ def main():
                 bruto = achados[0]
             else:
                 print(f"  voz da cena {c['numero']}: {texto}", flush=True)
-                bruto = tts_uma(modo, texto, voz_dir / "falas" / f"cena-{c['numero']:02d}", a)
+                melhor = None
+                for tent in range(1, max(1, a.tentativas) + 1):
+                    arq = tts_uma(modo, texto, voz_dir / "falas" / f"cena-{c['numero']:02d}-t{tent}", a)
+                    d = len(ler_pcm(arq, CORTA_PONTAS)) / TAXA
+                    if melhor is None or d < melhor[1]:
+                        melhor = (arq, d)
+                    if d <= limite_fala(texto):
+                        break
+                    print(f"    {d:.2f} s é demais para {len(texto.split())} palavras (limite {limite_fala(texto):.2f} s); "
+                          f"gerando de novo", flush=True)
+                bruto = melhor[0]
             pcm = ler_pcm(bruto, CORTA_PONTAS)
             if not pcm or pico_db(pcm) < SILENCIO_DB:
                 erro(f"a fala da cena {c['numero']} saiu MUDA (pico {pico_db(pcm) if pcm else '-inf'} dB) em {bruto}. "
@@ -179,9 +196,11 @@ def main():
                     "duracao_s": round(dur, 3), "acelerou": round(acel, 3), "arquivo": str(bruto)}
             if fim > c["fim_s"] + 0.05:
                 palavras = len(texto.split())
-                sugestao = max(2, int(palavras * (CENA_S - 0.3) / dur))
-                msg = (f"a fala da cena {c['numero']} ({dur:.2f} s) passa {fim - c['fim_s']:.2f} s do fim da cena; "
-                       f"encurte para ~{sugestao} palavras")
+                if dur <= vaga:
+                    dica = "a fala anterior empurrou esta: encurte a fala da cena anterior"
+                else:
+                    dica = f"encurte para ~{max(2, int(palavras * vaga / dur))} palavras"
+                msg = (f"a fala da cena {c['numero']} ({dur:.2f} s) passa {fim - c['fim_s']:.2f} s do fim da cena; {dica}")
                 aviso(msg)
                 info["aviso"] = msg
                 relatorio["avisos"].append(msg)

@@ -121,7 +121,24 @@ amarelo que liga as cenas) gerados para este kit e juntados num vídeo curto
 Tema: "Como um agente de IA tira o trabalho repetido do seu dia" — 30 s, 9:16, 1080×1920, 12 cenas,
 2 storyboards, motor local, voz local, trilha própria.
 
-DEMO_NUMEROS
+Resultado (conferido pelo `validar.py`):
+
+```
+  ok   manifesto com status completo
+  ok   30 arquivos do manifesto existem
+  ok   duração 30.00 s (pedido 30 s ± 0,5)
+  ok   resolução 1080x1920
+  ok   áudio do vídeo com som (média -20.1 dB, pico -3.7 dB)
+  ok   narração com voz (média -18.5 dB)
+PASSOU: vídeo conferido, pode dizer pronto.
+```
+
+- MP4: 30,0 s, 1080×1920, 30 fps, H.264 + AAC, 23 MB. Render local (motor `local`): 78 s nesta máquina.
+- Voz: TTS local (chatterbox, clonando uma voz de referência), 12 falas; as 12 frases conferidas com uma
+  transcrição local (Whisper) batem com o roteiro. Uma fala (cena 4) passa 0,36 s da cena, com aviso.
+- Trilha: `assets/trilha/energia.mp3` (própria), volume 0,5, abaixando sob a voz.
+- No repositório ficam os painéis em JPG (`paineis-jpg/`); os PNG, clipes e o vídeo mudo são gerados de novo
+  ao rodar. Por isso, num clone, confira com `python3 skill/scripts/validar.py --sem-intermediarios`.
 
 ## Melhore a skill depois de cada teste
 

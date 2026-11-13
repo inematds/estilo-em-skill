@@ -328,6 +328,23 @@ def t_validar_mudo():
     assert r.returncode == 1 and "narração muda" in r.stdout, r.stdout
 
 
+@caso("narrar: fala longa demais para o nº de palavras é gerada de novo (fica a mais curta)")
+def t_narrar_tentativas():
+    p = TMP / "fluxo-ok"
+    cont = TMP / "contador-tts"
+    cont.unlink(missing_ok=True)
+    tts = TMP / "tts-falso.sh"
+    tts.write_text(f"""n=$(cat {cont} 2>/dev/null || echo 0); echo $((n+1)) > {cont}
+d=1.2; [ "$n" -eq 0 ] && d=6
+ffmpeg -y -loglevel error -f lavfi -i sine=frequency=220:duration=$d "$1/fala.wav"
+""")
+    r = py(SCRIPTS / "narrar.py", "--pasta", p, "--comando", f"bash {tts} {{saida}}")
+    assert "gerando de novo" in r.stdout, r.stdout
+    enc = json.loads((p / "saida" / "voz" / "encaixe.json").read_text())
+    assert all(f["duracao_s"] < 1.5 for f in enc["falas"]), enc["falas"]
+    py(SCRIPTS / "narrar.py", "--pasta", p, "--comando", VOZ_TOM)      # deixa o projeto como estava
+
+
 @caso("narrar RECUSA voz muda (TTS que grava silêncio)")
 def t_narrar_mudo():
     p = TMP / "fluxo-ok"

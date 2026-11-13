@@ -1,0 +1,122 @@
+{
+  "modo": "inemavox",
+  "duracao_s": 30.0,
+  "falas": [
+    {
+      "cena": 1,
+      "texto": "Cansou de repetir tudo todo dia?",
+      "inicio_s": 0.12,
+      "fim_s": 2.412,
+      "duracao_s": 2.292,
+      "acelerou": 1.078,
+      "arquivo": "saida/voz/falas/cena-01-t1/generated.wav"
+    },
+    {
+      "cena": 2,
+      "texto": "Copiar, colar, conferir, de novo.",
+      "inicio_s": 2.62,
+      "fim_s": 4.891,
+      "duracao_s": 2.271,
+      "acelerou": 1.002,
+      "arquivo": "saida/voz/falas/cena-02-t1/generated.wav"
+    },
+    {
+      "cena": 3,
+      "texto": "São horas que viram nada.",
+      "inicio_s": 5.12,
+      "fim_s": 6.415,
+      "duracao_s": 1.295,
+      "acelerou": 1.0,
+      "arquivo": "saida/voz/falas/cena-03-t3/generated.wav"
+    },
+    {
+      "cena": 4,
+      "texto": "Um agente de IA faz isso.",
+      "inicio_s": 7.62,
+      "fim_s": 10.363,
+      "duracao_s": 2.743,
+      "acelerou": 1.15,
+      "arquivo": "saida/voz/falas/cena-04-t1/generated.wav",
+      "aviso": "a fala da cena 4 (2.74 s) passa 0.36 s do fim da cena; encurte para ~4 palavras"
+    },
+    {
+      "cena": 5,
+      "texto": "Você explica uma vez só.",
+      "inicio_s": 10.443,
+      "fim_s": 11.747,
+      "duracao_s": 1.305,
+      "acelerou": 1.0,
+      "arquivo": "saida/voz/falas/cena-05-t1/generated.wav"
+    },
+    {
+      "cena": 6,
+      "texto": "Ele anota as suas regras.",
+      "inicio_s": 12.62,
+      "fim_s": 14.088,
+      "duracao_s": 1.468,
+      "acelerou": 1.0,
+      "arquivo": "saida/voz/falas/cena-06-t3/generated.wav"
+    },
+    {
+      "cena": 7,
+      "texto": "E repete sem cansar.",
+      "inicio_s": 15.12,
+      "fim_s": 16.265,
+      "duracao_s": 1.145,
+      "acelerou": 1.0,
+      "arquivo": "saida/voz/falas/cena-07-t1/generated.wav"
+    },
+    {
+      "cena": 8,
+      "texto": "Confere cada passo.",
+      "inicio_s": 17.62,
+      "fim_s": 18.74,
+      "duracao_s": 1.12,
+      "acelerou": 1.0,
+      "arquivo": "saida/voz/falas/cena-08-t1/generated.wav"
+    },
+    {
+      "cena": 9,
+      "texto": "E te avisa quando acaba.",
+      "inicio_s": 20.12,
+      "fim_s": 22.294,
+      "duracao_s": 2.175,
+      "acelerou": 1.0,
+      "arquivo": "saida/voz/falas/cena-09-t1/generated.wav"
+    },
+    {
+      "cena": 10,
+      "texto": "Sobra tempo para você.",
+      "inicio_s": 22.62,
+      "fim_s": 23.793,
+      "duracao_s": 1.173,
+      "acelerou": 1.0,
+      "arquivo": "saida/voz/falas/cena-10-t3/generated.wav"
+    },
+    {
+      "cena": 11,
+      "texto": "Para pensar e criar.",
+      "inicio_s": 25.12,
+      "fim_s": 26.827,
+      "duracao_s": 1.707,
+      "acelerou": 1.0,
+      "arquivo": "saida/voz/falas/cena-11-t1/generated.wav"
+    },
+    {
+      "cena": 12,
+      "texto": "Seu dia, enfim, mais livre.",
+      "inicio_s": 27.62,
+      "fim_s": 29.625,
+      "duracao_s": 2.005,
+      "acelerou": 1.0,
+      "arquivo": "saida/voz/falas/cena-12-t2/generated.wav"
+    }
+  ],
+  "avisos": [
+    "a fala da cena 4 (2.74 s) passa 0.36 s do fim da cena; encurte para ~4 palavras"
+  ],
+  "arquivo": "saida/voz/narracao.wav",
+  "volume_medio_db": -18.5,
+  "pico_db": -1.5,
+  "duracao_real_s": 30.0
+}
